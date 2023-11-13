@@ -2,20 +2,15 @@ package pl.javastart.task;
 
 import java.util.Arrays;
 
-public class Student {
+public class Student extends Person {
     private int index;
-    private String groupCode;
-    private String firstName;
-    private String lastName;
     private double[] grades = new double[100];
     private int gradeCounter = 0;
     private String[] groupCodes = new String[100];
 
-    public Student(int index, String groupCode, String firstName, String lastName) {
+    public Student(int index, String firstName, String lastName) {
+        super(firstName, lastName);
         this.index = index;
-        this.groupCode = groupCode;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public void addGrade(double grade, String groupCode) {
@@ -24,18 +19,35 @@ public class Student {
             groupCodes[gradeCounter] = groupCode;
             gradeCounter++;
         } else {
-            grades = Arrays.copyOf(grades, grades.length * 2);
-            groupCodes = Arrays.copyOf(groupCodes, groupCodes.length * 2);
-
+            int newLength = grades.length * 2;
+            grades = Arrays.copyOf(grades, newLength);
+            groupCodes = Arrays.copyOf(groupCodes, newLength);
+            grades[gradeCounter] = grade;
+            groupCodes[gradeCounter] = groupCode;
+            gradeCounter++;
         }
     }
 
-    public double[] getGradesForGroup(String groupCode) {
+    public String[] getGroupCodes() {
+        String[] result = new String[gradeCounter];
+        System.arraycopy(groupCodes, 0, result, 0, gradeCounter);
+        return result;
+    }
 
+    public boolean isInGroup(String groupCode) {
+        for (String code : groupCodes) {
+            if (code != null && code.equals(groupCode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public double[] getGradesForGroup(String groupCode) {
         double[] groupGrades = new double[gradeCounter];
         int count = 0;
         for (int i = 0; i < gradeCounter; i++) {
-            if (groupCodes[i] != null && groupCodes[i].equals(groupCode)) {
+            if (groupCodes[i].equals(groupCode)) {
                 groupGrades[count++] = grades[i];
             }
         }
@@ -50,19 +62,4 @@ public class Student {
         return index;
     }
 
-    public String getGroupCode() {
-        return groupCode;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public boolean hasGrade() {
-        return gradeCounter > 0;
-    }
 }

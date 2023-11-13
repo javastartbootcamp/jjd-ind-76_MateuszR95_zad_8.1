@@ -6,109 +6,82 @@ public class Group {
 
     private String code;
     private String name;
-    private int lecturerId;
+    private Lecturer lecturer;
     private Student[] students = new Student[100];
+    private double[] grades = new double[100];
     private int studentCounter = 0;
 
-    public Group(String code, String name, int lecturerId) {
+    public Group(String code, String name, Lecturer lecturer) {
         this.code = code;
         this.name = name;
-        this.lecturerId = lecturerId;
+        this.lecturer = lecturer;
     }
 
     public void addStudent(Student student) {
-        if (isStudentExist(student.getIndex())) {
+        if (studentCounter >= students.length) {
+            students = expandArray(students);
+            grades = expandArray(grades);
+        }
+
+        if (hasStudent(student.getIndex())) {
             System.out.println("Student o numerze indeksu " + student.getIndex() + " jest już w grupie " + getCode());
         } else {
-            if (studentCounter < students.length) {
-                students[studentCounter] = student;
-                studentCounter++;
-            } else {
-                students = Arrays.copyOf(students, students.length * 2);
-                students[studentCounter] = student;
-                studentCounter++;
-            }
+            students[studentCounter] = student;
+            studentCounter++;
         }
-    }
-
-    public double[] getGradesForStudent(int studentIndex) {
-        for (Student student : students) {
-            if (student != null && student.getIndex() == studentIndex) {
-                return student.getGradesForGroup(getCode());
-            }
-        }
-        return new double[0];
     }
 
     public void addGrade(int studentIndex, double grade) {
-        Student student = findStudent(studentIndex);
-        if (isStudentExist(studentIndex)) {
-            if (student != null) {
-                student.addGrade(grade, getCode());
+        if (hasGrade(studentIndex)) {
+            System.out.println("Student o indeksie " + studentIndex + " ma już wystawioną ocenę");
+        } else {
+            int index = findStudentIndex(studentIndex);
+            if (index >= 0) {
+                grades[index] = grade;
             }
         }
     }
 
-    private Student findStudent(int studentIndex) {
-        for (Student student : students) {
-            if (student != null && student.getIndex() == studentIndex) {
-                return student;
-            }
-        }
-        return null;
+    public boolean hasGrade(int studentIndex) {
+        return findStudentIndex(studentIndex) >= 0 && grades[findStudentIndex(studentIndex)] != 0;
     }
 
-    public boolean isStudentExist(int index) {
-        for (int i = 0; i < studentCounter; i++) {
-            if (students[i] != null && students[i].getIndex() == index) {
-                return true;
-            }
-        }
-        return false;
-
+    public boolean hasStudent(int index) {
+        return findStudentIndex(index) >= 0;
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getLecturerId() {
-        return lecturerId;
-    }
-
-    public void setLecturerId(int lecturerId) {
-        this.lecturerId = lecturerId;
+    public Lecturer getLecturer() {
+        return lecturer;
     }
 
     public Student[] getStudents() {
-        return students;
+        Student[] result = new Student[studentCounter];
+        System.arraycopy(students, 0, result, 0, studentCounter);
+        return result;
     }
 
-    public void setStudents(Student[] students) {
-        this.students = students;
+    private int findStudentIndex(int index) {
+        for (int i = 0; i < studentCounter; i++) {
+            if (students[i] != null && students[i].getIndex() == index) {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    public int getStudentCounter() {
-        return studentCounter;
+    private Student[] expandArray(Student[] array) {
+        return Arrays.copyOf(array, array.length * 2);
     }
 
-    public void setStudentCounter(int studentCounter) {
-        this.studentCounter = studentCounter;
-    }
-
-    public void printGroupInfo() {
-        System.out.println("Kod grupy: " + code + ", Nazwa grupy: " + name + ", Id prowadzącego grupy: " + lecturerId);
+    private double[] expandArray(double[] array) {
+        return Arrays.copyOf(array, array.length * 2);
     }
 }
