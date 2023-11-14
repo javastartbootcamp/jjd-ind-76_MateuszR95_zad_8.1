@@ -28,6 +28,10 @@ public class Lecturer extends Person {
         this.degree = degree;
     }
 
+    public String printInfo() {
+        return degree + " " + firstName + " " + lastName;
+    }
+
 }
 
 

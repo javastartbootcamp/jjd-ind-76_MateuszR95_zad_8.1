@@ -84,4 +84,38 @@ public class Group {
     private double[] expandArray(double[] array) {
         return Arrays.copyOf(array, array.length * 2);
     }
+
+    public void printGrades() {
+
+        System.out.println("Oceny dla grupy " + code + ":");
+
+        boolean gradesPrinted = false;
+
+        for (int i = 0; i < studentCounter; i++) {
+            Student student = students[i];
+
+            if (student != null) {
+                double grade = getGradeForStudent(student.getIndex());
+
+                if (grade != 0) {
+                    System.out.println(student.printInfo() + ": " + grade);
+                    gradesPrinted = true;
+                }
+            }
+        }
+
+        if (!gradesPrinted) {
+            System.out.println("Brak ocen dla grupy " + code);
+        }
+    }
+
+    private double getGradeForStudent(int studentIndex) {
+        for (int i = 0; i < studentCounter; i++) {
+            if (students[i].getIndex() == studentIndex) {
+                return grades[i];
+            }
+        }
+        return 0;
+
+    }
 }

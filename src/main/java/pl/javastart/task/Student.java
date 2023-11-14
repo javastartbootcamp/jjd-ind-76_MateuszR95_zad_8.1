@@ -43,23 +43,16 @@ public class Student extends Person {
         return false;
     }
 
-    public double[] getGradesForGroup(String groupCode) {
-        double[] groupGrades = new double[gradeCounter];
-        int count = 0;
-        for (int i = 0; i < gradeCounter; i++) {
-            if (groupCodes[i].equals(groupCode)) {
-                groupGrades[count++] = grades[i];
-            }
-        }
-        return Arrays.copyOf(groupGrades, count);
-    }
-
     public double[] getGrades() {
         return Arrays.copyOf(grades, gradeCounter);
     }
 
     public int getIndex() {
         return index;
+    }
+
+    public String printInfo() {
+        return index + " " + firstName + " " + lastName;
     }
 
 }

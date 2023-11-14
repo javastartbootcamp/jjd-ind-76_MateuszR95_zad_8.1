@@ -2,8 +2,8 @@ package pl.javastart.task;
 
 public class Person {
 
-    private String firstName;
-    private String lastName;
+    protected String firstName;
+    protected String lastName;
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;

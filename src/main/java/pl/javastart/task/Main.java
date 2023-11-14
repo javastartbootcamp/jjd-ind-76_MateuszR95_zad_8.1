@@ -17,7 +17,7 @@ public class Main {
         universityApp.addStudentToGroup(179128, "pp-2022", "Marcin", "Kubacki");
         universityApp.addStudentToGroup(179128, "po-2022", "Marcin", "Kubacki");
         universityApp.addStudentToGroup(179129, "po-2022", "Adam", "Browarski");
-        
+
         universityApp.addGrade(179126, "pp-2022", 5);
         universityApp.addGrade(179127, "po-2022", 5);
         universityApp.addGrade(179128, "pp-2022", 5);
